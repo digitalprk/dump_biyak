@@ -92,6 +92,9 @@ def translate_by_substitution(word, substitution_dictionary):
             if word[i:i+4] == b'\xd4\xe9\x83\xd4': # handling the case for 및 which was does not appear in the word list
                 res[i:i+4] = b' \xB7\xF1 '
                 i += 4
+            elif word[i:i+2] == b'"$': # another special case unaccounted for...
+                res[i:i+2] = b'TV'
+                i +=2
             else:
                 res[i:i + 2] = substitution_dictionary[word[i:i+2]]
                 i += 2
@@ -134,6 +137,7 @@ if __name__ == "__main__":
                                             english_wordlist,
                                             decoded_field_content
     )
+    final_data = sorted(final_data, key=lambda x: x[0])
 
     d.close()
 
